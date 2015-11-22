@@ -3,7 +3,7 @@
 from PIL import Image, ImageDraw
 from random import randint
 
-def rectanglesCut(imSize, rectCount):
+def rectangles_cut(imSize, rectCount):
     """ Returns a list of coordinates of rectangles that subdivide an image of
     size imSize, with rectangleCount the number of rectangles in each
     dimension (X & Y axis) """
@@ -33,7 +33,7 @@ def rectanglesCut(imSize, rectCount):
 def main():
     im = Image.new("RGB", [1600, 900], 0)
 
-    rectangles = rectanglesCut(im.size, (8, 8))
+    rectangles = rectangles_cut(im.size, (8, 8))
 
     draw = ImageDraw.Draw(im)
 
