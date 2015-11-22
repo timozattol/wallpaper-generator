@@ -17,31 +17,40 @@ class PolyLattice:
         self.vertices = {}
 
     def draw(self, image_draw):
+        """ Draw the polygons of the lattice on the image_draw """
         for p in self.polygons:
             p.draw(image_draw)
 
     def debug_print(self):
+        """ Print debug informations about the lattice """
         print("Polygons:")
         print(self.polygons)
-        print("\nVertices:")
+        print("\n")
+        print("Vertices:")
         print(self.vertices)
 
     def mutate(self, intensity):
+        """ Mutate the vertices that are not on the border of the image """
 
         # Mutate each vertex that is not in one border of the image
         for vertex in self.vertices.values():
-            if vertex.coordinates[0] != 0 \
-                    and vertex.coordinates[0] != self.image_size[0] \
-                    and vertex.coordinates[1] != 0 \
-                    and vertex.coordinates[1] != self.image_size[1]:
+            if vertex.coordinates[0] != 0 and \
+               vertex.coordinates[0] != self.image_size[0] and \
+               vertex.coordinates[1] != 0 and \
+               vertex.coordinates[1] != self.image_size[1]:
 
                 vertex.random_mutation(intensity)
 
     def randomise_colors(self):
+        """ Randomise the color of each polygon """
         for polygon in self.polygons:
             polygon.set_random_color()
 
     def initialise(self):
+        """
+        Initialise the lattice with simple rectangles, cutting the image
+        evenly considering self.polygon_counts.
+        """
         # X and Y size of rectangles
         rect_size = \
         (

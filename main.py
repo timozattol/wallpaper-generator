@@ -9,13 +9,13 @@ def main():
 
     image_draw = ImageDraw.Draw(im)
 
-    polylattice = PolyLattice(im.size, (20, 20))
+    polylattice = PolyLattice(im.size, (12, 7))
 
     polylattice.initialise()
 
     #polylattice.debug_print()
 
-    polylattice.mutate(30)
+    polylattice.mutate(40)
     polylattice.randomise_colors()
     polylattice.draw(image_draw)
 
