@@ -32,6 +32,12 @@ class PolyLattice:
     def mutate(self, intensity):
         """ Mutate the vertices that are not on the border of the image """
 
+        # Find border coordinates
+        # It is not simply image_size[0] and [1] because the image is not always
+        # perfectly divided by the polygons
+
+        # TODO do it
+
         # Mutate each vertex that is not in one border of the image
         for vertex in self.vertices.values():
             if vertex.coordinates[0] != 0 and \
@@ -45,6 +51,30 @@ class PolyLattice:
         """ Randomise the color of each polygon """
         for polygon in self.polygons:
             polygon.set_random_color()
+
+    def gradient_colors(self, color_init, color_final):
+        """
+        Apply a gradient of colors to the polygons, by simply iterating on
+        them
+        """
+        n_polygons = len(self.polygons)
+
+        delta_r = int((color_final[0] - color_init[0]) / n_polygons)
+        delta_g = int((color_final[1] - color_init[1]) / n_polygons)
+        delta_b = int((color_final[2] - color_init[2]) / n_polygons)
+
+        color_current = color_init
+
+        for polygon in self.polygons:
+            polygon.set_color(color_current)
+
+            color_current = (
+                color_current[0] + delta_r,
+                color_current[1] + delta_g,
+                color_current[2] + delta_b
+            )
+
+
 
     def initialise(self):
         """

@@ -18,6 +18,10 @@ class Polygon:
         """ Set the polygon to be colored at random """
         self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
+    def set_color(self, color):
+        """ Set the polygon to be colored with color color """
+        self.color = color
+
     def __repr__(self):
         coordinates = map(lambda v: v.coordinates, self.vertices)
 
