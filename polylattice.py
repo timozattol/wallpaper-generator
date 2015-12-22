@@ -1,4 +1,6 @@
 from polygon import Vertex, Polygon
+from random import random
+from math import pi, sin, cos
 
 class PolyLattice:
     """
@@ -57,11 +59,11 @@ class PolyLattice:
         Apply a gradient of colors to the polygons, by iterating on
         them after applying a sorting function before (optional)
         """
-        n_polygons = len(self.polygons)
+        polygons_count = len(self.polygons)
 
-        delta_r = (color_final[0] - color_init[0]) / n_polygons
-        delta_g = (color_final[1] - color_init[1]) / n_polygons
-        delta_b = (color_final[2] - color_init[2]) / n_polygons
+        delta_r = (color_final[0] - color_init[0]) / polygons_count
+        delta_g = (color_final[1] - color_init[1]) / polygons_count
+        delta_b = (color_final[2] - color_init[2]) / polygons_count
 
         color_current = color_init
 
@@ -86,6 +88,26 @@ class PolyLattice:
                 color_current[1] + delta_g,
                 color_current[2] + delta_b
             )
+
+    def gradient_colors_direction(self, color_init, color_final, angle):
+        """ Apply a gradient of color according to a certain angle """
+        # Define the sorting function according to the given angle
+        def polygon_sort_key(polygon):
+            center = polygon.get_center()
+
+            # Order the polygons following the angle
+            return cos(angle) * center[0] + sin(angle) * center[1]
+
+        # Pass the sorting function to gradient_colors()
+        self.gradient_colors(color_init, color_final, polygon_sort_key)
+
+
+    def gradient_colors_random_direction(self, color_init, color_final):
+        """ Apply a gradient of color according to a random angle """
+        # Choose angle at random, from 0 to 2PI radians
+        angle = random() * 2 * pi
+
+        self.gradient_colors_direction(color_init, color_final, angle)
 
     def initialise(self):
         """

@@ -16,11 +16,9 @@ def main():
     polylattice.initialise()
 
     polylattice.mutate(40)
-    polylattice.gradient_colors(
+    polylattice.gradient_colors_random_direction(
         (168, 223, 32),
-        (106, 32, 159),
-        # Inefficient but temporary
-        lambda polygon: polygon.get_center()[0] + polygon.get_center()[1]
+        (106, 32, 159)
     )
     polylattice.draw(image_draw)
 
