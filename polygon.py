@@ -1,5 +1,8 @@
 from random import random, randint
 
+
+## Polygon class ##
+
 class Polygon:
     """
     Represents a polygon, with vertices and a color,
@@ -21,6 +24,20 @@ class Polygon:
     def set_color(self, color):
         """ Set the polygon to be colored with color color """
         self.color = color
+
+    def get_center(self):
+        """ Returns the coordinates of the center of the polygon """
+        x, y = 0, 0
+
+        for v in self.vertices:
+            x += v.get_x()
+            y += v.get_y()
+
+        x /= len(self.vertices)
+        y /= len(self.vertices)
+
+        return (int(x), int(y))
+
 
     def __repr__(self):
         coordinates = map(lambda v: v.coordinates, self.vertices)
@@ -57,6 +74,12 @@ class Vertex:
 
     def __repr__(self):
         return self.coordinates.__repr__()
+
+    def get_x(self):
+        return self.coordinates[0]
+
+    def get_y(self):
+        return self.coordinates[1]
 
     def random_mutation(self, intensity):
         """ Mutate randomly on x and y axis """

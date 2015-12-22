@@ -52,29 +52,40 @@ class PolyLattice:
         for polygon in self.polygons:
             polygon.set_random_color()
 
-    def gradient_colors(self, color_init, color_final):
+    def gradient_colors(self, color_init, color_final, polygon_sort_key=None):
         """
-        Apply a gradient of colors to the polygons, by simply iterating on
-        them
+        Apply a gradient of colors to the polygons, by iterating on
+        them after applying a sorting function before (optional)
         """
         n_polygons = len(self.polygons)
 
-        delta_r = int((color_final[0] - color_init[0]) / n_polygons)
-        delta_g = int((color_final[1] - color_init[1]) / n_polygons)
-        delta_b = int((color_final[2] - color_init[2]) / n_polygons)
+        delta_r = (color_final[0] - color_init[0]) / n_polygons
+        delta_g = (color_final[1] - color_init[1]) / n_polygons
+        delta_b = (color_final[2] - color_init[2]) / n_polygons
 
         color_current = color_init
 
-        for polygon in self.polygons:
-            polygon.set_color(color_current)
+        # Optionally sort the polygon list
+        if polygon_sort_key:
+            polygon_list = sorted(self.polygons, key=polygon_sort_key)
+        else:
+            polygon_list = self.polygons
+
+        # Iterate over sorted polygon list, color them and update current color
+        for polygon in polygon_list:
+            color_current_int = (
+                int(color_current[0]),
+                int(color_current[1]),
+                int(color_current[2])
+            )
+
+            polygon.set_color(color_current_int)
 
             color_current = (
                 color_current[0] + delta_r,
                 color_current[1] + delta_g,
                 color_current[2] + delta_b
             )
-
-
 
     def initialise(self):
         """
