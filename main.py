@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 from random import seed, randint, sample
 from polylattice import PolyLattice
 from colors import palettes
-from os import getcwd
+from os import path
 
 import subprocess
 
@@ -14,8 +14,11 @@ def main():
     screen_size = (1600, 900)
     chunk_size = (100, 100) # screen_size / chunk_size have to be integer
     mutation_intensity = 40
-    render_path = "renders/wallpaper.jpg"
 
+    ## Paths ##
+    file_path = path.realpath(__file__)
+    file_dir = file_path.rstrip("/main.py")
+    render_path = file_dir + "/renders/wallpaper.jpg"
 
     # Set seed to control randomness
     # seed('42')
@@ -47,8 +50,7 @@ def main():
     im.save(render_path)
 
     # Update wallpaper
-    wd = getcwd()
-    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", wd, "/", render_path])])
+    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
 
 if __name__ == '__main__':
     main()
