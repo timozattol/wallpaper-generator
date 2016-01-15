@@ -15,17 +15,14 @@ class Polygon:
 
     def draw(self, image_draw):
         """ Draw the polygon on the image_draw """
-        image_draw.polygon(self.__vertices_to_list(), self.color)
+        image_draw.polygon([v.coordinates for v in self.vertices], self.color)
 
     def set_random_color(self):
         """ Set the polygon to be colored at random """
         self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
-    def set_color(self, color):
-        """ Set the polygon to be colored with color color """
-        self.color = color
-
-    def get_center(self):
+    @property
+    def center(self):
         """ Returns the coordinates of the center of the polygon """
         x, y = 0, 0
 
@@ -49,18 +46,6 @@ class Polygon:
 
         return "[{}]".format(string)
 
-    def __vertices_to_list(self):
-        """
-        Extracts coordinates of vertices, so that they can be accepted
-        by the draw method imagedraw.polygon()
-        """
-        vertices_list = []
-
-        for v in self.vertices:
-            vertices_list.append(v.coordinates)
-
-        return vertices_list
-
 class Vertex:
     """
     A vertex in two dimensions. Mutations can be applied so that it randomly
@@ -68,9 +53,6 @@ class Vertex:
     """
     def __init__(self, coordinates):
         self.coordinates = coordinates
-
-    def __hash__(self):
-        self.coordinates.hash()
 
     def __repr__(self):
         return self.coordinates.__repr__()

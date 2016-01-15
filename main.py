@@ -13,7 +13,7 @@ def main():
     palette = 'pastel_forest'
     screen_size = (1600, 900)
     chunk_size = (100, 100) # screen_size / chunk_size have to be integer
-    mutation_intensity = 20
+    mutation_intensity = 30
 
     ## Paths ##
     file_path = path.realpath(__file__)

@@ -81,7 +81,7 @@ class PolyLattice:
                 int(color_current[2])
             )
 
-            polygon.set_color(color_current_int)
+            polygon.color = color_current_int
 
             color_current = (
                 color_current[0] + delta_r,
@@ -93,7 +93,7 @@ class PolyLattice:
         """ Apply a gradient of color according to a certain angle """
         # Define the sorting function according to the given angle
         def polygon_sort_key(polygon):
-            center = polygon.get_center()
+            center = polygon.center
 
             # Order the polygons following the angle
             return cos(angle) * center[0] + sin(angle) * center[1]
