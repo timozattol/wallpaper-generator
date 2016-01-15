@@ -109,10 +109,11 @@ class PolyLattice:
 
         self.gradient_colors_direction(color_init, color_final, angle)
 
-    def initialise(self):
+    def initialise(self, separate_in_triangles=False):
         """
         Initialise the lattice with simple rectangles, cutting the image
-        evenly considering self.polygon_counts.
+        evenly considering self.polygon_counts. If separate_in_triangles is
+        True, cuts those rectangles in half to make triangles
         """
         # X and Y size of rectangles
         rect_size = \
@@ -145,5 +146,20 @@ class PolyLattice:
                         self.vertices[coordinate] = new_vertex
                         rect_vertices.append(new_vertex)
 
-                # Add new rectangle to the polygons
-                self.polygons.append(Polygon(rect_vertices))
+                if separate_in_triangles:
+                    # Separate rectangle into two triangles, alternating on
+                    # which diagonal to separate
+                    if (i + j) % 2:
+                        triangle1 = rect_vertices[0:3]
+                        triangle2 = [rect_vertices[0]] + rect_vertices[2:4]
+                    else:
+                        triangle1 = rect_vertices[0:2] + [rect_vertices[3]]
+                        triangle2 = rect_vertices[1:4]
+
+                    # Add both triangles to the polygons
+                    self.polygons.append(Polygon(triangle1))
+                    self.polygons.append(Polygon(triangle2))
+
+                else:
+                    # Add new rectangle to the polygons
+                    self.polygons.append(Polygon(rect_vertices))

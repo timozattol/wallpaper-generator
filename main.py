@@ -13,7 +13,7 @@ def main():
     palette = 'pastel_forest'
     screen_size = (1600, 900)
     chunk_size = (100, 100) # screen_size / chunk_size have to be integer
-    mutation_intensity = 40
+    mutation_intensity = 20
 
     ## Paths ##
     file_path = path.realpath(__file__)
@@ -31,7 +31,7 @@ def main():
     poly_size_x = int(screen_size[0] / chunk_size[0])
     poly_size_y = int(screen_size[1] / chunk_size[1])
     polylattice = PolyLattice(im.size, (poly_size_x, poly_size_y))
-    polylattice.initialise()
+    polylattice.initialise(separate_in_triangles=True)
 
     # Choose two colors from the palette
     colors = sample(palettes[palette], 2)
