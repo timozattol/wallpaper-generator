@@ -7,6 +7,9 @@ from colors import palettes
 from os import path
 import subprocess
 
+# Possible resolution and their respective chunk size (more needed)
+res = {(1600, 900): (100, 100), (1440, 900):(96, 100)}
+
 def main():
     ## Configurations ##
     palette = 'pastel_forest'
@@ -22,10 +25,12 @@ def main():
     binary_res, ununsed = process2.communicate()
     binary_res = binary_res.split()[0]
     resolution = binary_res.decode("utf-8").split('x')
+    
+    width = int(resolution[0])
+    height = int(resolution[1])
+    screen_size = (width, height)
 
-    screen_size = (int(resolution[0]), int(resolution[1]))
-
-    chunk_size = (100, 100) # screen_size / chunk_size have to be integer
+    chunk_size = res.get((width, height),(width/12,height/8)) # screen_size / chunk_size have to be integer
     mutation_intensity = 30
 
     ## Paths ##
@@ -43,6 +48,8 @@ def main():
     # Initialise a PolyLattice
     poly_size_x = int(screen_size[0] / chunk_size[0])
     poly_size_y = int(screen_size[1] / chunk_size[1])
+
+
     polylattice = PolyLattice(im.size, (poly_size_x, poly_size_y))
     polylattice.initialise(separate_in_triangles=True)
 
@@ -63,7 +70,7 @@ def main():
     im.save(render_path)
 
     # Update wallpaper
-    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
+    #subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
 
 if __name__ == '__main__':
     main()
