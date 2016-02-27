@@ -5,13 +5,26 @@ from random import seed, randint, sample
 from polylattice import PolyLattice
 from colors import palettes
 from os import path
-
 import subprocess
 
 def main():
     ## Configurations ##
     palette = 'pastel_forest'
-    screen_size = (1600, 900)
+
+    # Get resolution dynamically
+    cmd1 = ['xrandr']
+    cmd2 = ['grep', '*']
+
+    process = subprocess.Popen(cmd1, stdout=subprocess.PIPE)
+    process2 = subprocess.Popen(cmd2, stdin=process.stdout, stdout=subprocess.PIPE)
+    process.stdout.close()
+
+    binary_res, ununsed = process2.communicate()
+    binary_res = binary_res.split()[0]
+    resolution = binary_res.decode("utf-8").split('x')
+
+    screen_size = (int(resolution[0]), int(resolution[1]))
+
     chunk_size = (100, 100) # screen_size / chunk_size have to be integer
     mutation_intensity = 30
 
