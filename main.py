@@ -30,7 +30,7 @@ def main():
     height = int(resolution[1])
     screen_size = (width, height)
 
-    chunk_size = res.get((width, height),(width/12,height/8)) # screen_size / chunk_size have to be integer
+    chunk_size = res.get((width, height), (width/12, height/8)) # screen_size / chunk_size have to be integer
     mutation_intensity = 30
 
     ## Paths ##
@@ -70,7 +70,7 @@ def main():
     im.save(render_path)
 
     # Update wallpaper
-    #subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
+    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
 
 if __name__ == '__main__':
     main()
