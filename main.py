@@ -13,6 +13,12 @@ res_chunk_map = {(1600, 900): (100, 100), (1440, 900):(96, 100)}
 def main():
     ## Configurations ##
     palette = 'pastel_forest'
+    mutation_intensity = 30
+
+    ## Paths ##
+    file_path = path.realpath(__file__)
+    file_dir = file_path.rstrip("/main.py")
+    render_path = file_dir + "/renders/wallpaper.jpg"
 
     # Get resolution dynamically
     cmd1 = ['xrandr']
@@ -33,13 +39,6 @@ def main():
     # Get known chunk size if possible
     chunk_size = res_chunk_map.get((width, height), (width / 12, height / 8))
 
-    mutation_intensity = 30
-
-    ## Paths ##
-    file_path = path.realpath(__file__)
-    file_dir = file_path.rstrip("/main.py")
-    render_path = file_dir + "/renders/wallpaper.jpg"
-
     # Set seed to control randomness
     # seed('42')
 
@@ -50,7 +49,6 @@ def main():
     # Initialise a PolyLattice
     poly_size_x = int(screen_size[0] / chunk_size[0])
     poly_size_y = int(screen_size[1] / chunk_size[1])
-
 
     polylattice = PolyLattice(im.size, (poly_size_x, poly_size_y))
     polylattice.initialise(separate_in_triangles=True)
