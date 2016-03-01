@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 
 from PIL import Image, ImageDraw
-from random import seed, randint, sample
+from random import seed, sample
 from polylattice import PolyLattice
 from colors import palettes
 from os import path
 import subprocess
 
 # Possible resolution and their respective chunk size (more needed)
-res = {(1600, 900): (100, 100), (1440, 900):(96, 100)}
+res_chunk_map = {(1600, 900): (100, 100), (1440, 900):(96, 100)}
 
 def main():
     ## Configurations ##
@@ -22,15 +22,17 @@ def main():
     process2 = subprocess.Popen(cmd2, stdin=process.stdout, stdout=subprocess.PIPE)
     process.stdout.close()
 
-    binary_res, ununsed = process2.communicate()
+    binary_res, _ = process2.communicate()
     binary_res = binary_res.split()[0]
     resolution = binary_res.decode("utf-8").split('x')
-    
+
     width = int(resolution[0])
     height = int(resolution[1])
     screen_size = (width, height)
 
-    chunk_size = res.get((width, height), (width/12, height/8)) # screen_size / chunk_size have to be integer
+    # Get known chunk size if possible
+    chunk_size = res_chunk_map.get((width, height), (width / 12, height / 8))
+
     mutation_intensity = 30
 
     ## Paths ##
