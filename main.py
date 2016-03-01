@@ -7,8 +7,17 @@ from colors import palettes
 from os import path
 import subprocess
 
-# Possible resolution and their respective chunk size (more needed)
-res_chunk_map = {(1600, 900): (100, 100), (1440, 900):(96, 100)}
+# Possible resolution and their respective chunk size (TODO need to find better solution)
+res_chunk_map = {
+    (3840, 2160): (240, 135),
+    (1920, 1080): (160, 90),
+    (1600, 900): (100, 100),
+    (1440, 900):(96, 100),
+    (1360, 768): (136, 64),
+    (1024, 768): (128, 96),
+    (800, 600): (100, 100),
+    (640, 480): (80, 60)
+}
 
 def main():
     ## Configurations ##
