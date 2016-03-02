@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import os
-from os import path
+from os import path, makedirs
 import subprocess
 from PIL import Image, ImageDraw
 from random import seed, sample
@@ -29,9 +28,12 @@ def main():
     ## Paths ##
     file_path = path.realpath(__file__)
     file_dir = file_path.rstrip("/main.py")
-    render = file_dir + "/renders"
-    os.makedirs(render, exist_ok=True)
-    render_path = file_dir + "/renders/wallpaper.jpg"
+
+    # Create renders/ folder if necessary
+    render_folder = file_dir + "/renders"
+    makedirs(render_folder, exist_ok=True)
+
+    render_file = render_folder + "/wallpaper.jpg"
 
     # Get resolution dynamically
     cmd1 = ['xrandr']
@@ -77,13 +79,13 @@ def main():
     polylattice.draw(image_draw)
 
     # Delete eventual previous renders
-    subprocess.call(["rm", render_path], stderr=subprocess.DEVNULL)
+    subprocess.call(["rm", render_file], stderr=subprocess.DEVNULL)
 
     # Save image in renders
-    im.save(render_path)
+    im.save(render_file)
 
     # Update wallpaper
-    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_path])])
+    subprocess.call(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "".join(["file://", render_file])])
 
 if __name__ == '__main__':
     main()
