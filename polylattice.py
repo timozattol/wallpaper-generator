@@ -38,16 +38,22 @@ class PolyLattice:
         # It is not simply image_size[0] and [1] because the image is not always
         # perfectly divided by the polygons
 
-        # TODO do it
 
         # Mutate each vertex that is not in one border of the image
+        # We use the fact that a mutated vertex cannot be inside the screen
+        # if its original value was outside
         for vertex in self.vertices.values():
-            if vertex.coordinates[0] != 0 and \
-               vertex.coordinates[0] != self.image_size[0] and \
-               vertex.coordinates[1] != 0 and \
-               vertex.coordinates[1] != self.image_size[1]:
-
+            init_x = vertex.coordinates[0]
+            init_y = vertex.coordinates[1]
+            if init_x != 0 and init_y != 0:
                 vertex.random_mutation(intensity)
+            if (vertex.coordinates[0] < self.image_size[0] and \
+               init_x >= self.image_size[0]) or \
+               (vertex.coordinates[1] < self.image_size[1] and \
+               init_y >= self.image_size[1]):
+                    # Revert mutation
+                    vertex.coordinates = (init_x, init_y)
+    
 
     def randomise_colors(self):
         """ Randomise the color of each polygon """
