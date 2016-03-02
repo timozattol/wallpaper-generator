@@ -35,13 +35,12 @@ class PolyLattice:
     def mutate(self, intensity):
         """ Mutate the vertices that are not on the border of the image """
 
-        # Mutate each vertex that is not in one border of the image
-        # We use the fact that a mutated vertex cannot be inside the screen
-        # if its original value was outside
+        # Mutate each vertex that is not in one border or outside the image
         for vertex in self.vertices.values():
             x_coord = vertex.coordinates[0]
             y_coord = vertex.coordinates[1]
-            if x_coord != 0 and y_coord != 0 and x_coord < self.image_size[0] and y_coord < self.image_size[1]:
+            if x_coord != 0 and y_coord != 0 \
+                and x_coord < self.image_size[0] and y_coord < self.image_size[1]:
                 vertex.random_mutation(intensity)
 
 
