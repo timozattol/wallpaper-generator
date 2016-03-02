@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 
+import os
+from os import path
+import subprocess
 from PIL import Image, ImageDraw
 from random import seed, sample
 from polylattice import PolyLattice
 from colors import palettes
-from os import path
-import subprocess
+
 
 # Possible resolution and their respective chunk size (TODO need to find better solution)
 res_chunk_map = {
@@ -27,6 +29,8 @@ def main():
     ## Paths ##
     file_path = path.realpath(__file__)
     file_dir = file_path.rstrip("/main.py")
+    render = file_dir + "/renders"
+    os.makedirs(render, exist_ok=True)
     render_path = file_dir + "/renders/wallpaper.jpg"
 
     # Get resolution dynamically
