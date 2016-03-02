@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from os import path, makedirs
+from math import ceil
 import subprocess
 from PIL import Image, ImageDraw
 from random import seed, sample
@@ -13,7 +14,7 @@ res_chunk_map = {
     (3840, 2160): (240, 135),
     (1920, 1080): (160, 90),
     (1600, 900): (100, 100),
-    (1440, 900):(96, 100),
+    (1440, 900):(100, 100),
     (1360, 768): (136, 64),
     (1024, 768): (128, 96),
     (800, 600): (100, 100),
@@ -62,10 +63,10 @@ def main():
     image_draw = ImageDraw.Draw(im)
 
     # Initialise a PolyLattice
-    poly_size_x = int(screen_size[0] / chunk_size[0])
-    poly_size_y = int(screen_size[1] / chunk_size[1])
+    poly_size_x = (screen_size[0] / chunk_size[0])
+    poly_size_y = (screen_size[1] / chunk_size[1])
 
-    polylattice = PolyLattice(im.size, (poly_size_x, poly_size_y))
+    polylattice = PolyLattice(im.size, (ceil(poly_size_x), ceil(poly_size_y)))
     polylattice.initialise(separate_in_triangles=True)
 
     # Choose two colors from the palette
