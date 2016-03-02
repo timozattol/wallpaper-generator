@@ -4,27 +4,19 @@ from os import path, makedirs
 from math import ceil
 import subprocess
 from PIL import Image, ImageDraw
-from random import seed, sample
+from random import sample
 from polylattice import PolyLattice
 from colors import palettes
 
-
-# Possible resolution and their respective polygon size (TODO need to find better solution)
-res_poly_size_map = {
-    (3840, 2160): (240, 135),
-    (1920, 1080): (160, 90),
-    (1600, 900): (100, 100),
-    (1440, 900):(100, 100),
-    (1360, 768): (136, 64),
-    (1024, 768): (128, 96),
-    (800, 600): (100, 100),
-    (640, 480): (80, 60)
-}
-
 def main():
+
     ## Configurations ##
     palette = 'pastel_forest'
     mutation_intensity = 30
+
+    # Polygons have a fixed size in px. Higher resolution = more polygons
+    poly_sizes = (120, 100)
+
 
     ## Paths ##
     file_path = path.realpath(__file__)
@@ -51,12 +43,6 @@ def main():
     width = int(resolution[0])
     height = int(resolution[1])
     screen_size = (width, height)
-
-    # Get known polygon size if possible
-    poly_sizes = res_poly_size_map.get((width, height), (width / 12, height / 8))
-
-    # Set seed to control randomness
-    # seed('42')
 
     # Create an image of the size of the screen
     im = Image.new("RGB", screen_size, 0)
