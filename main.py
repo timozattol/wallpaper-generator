@@ -9,8 +9,8 @@ from polylattice import PolyLattice
 from colors import palettes
 
 
-# Possible resolution and their respective chunk size (TODO need to find better solution)
-res_chunk_map = {
+# Possible resolution and their respective polygon size (TODO need to find better solution)
+res_poly_size_map = {
     (3840, 2160): (240, 135),
     (1920, 1080): (160, 90),
     (1600, 900): (100, 100),
@@ -52,8 +52,8 @@ def main():
     height = int(resolution[1])
     screen_size = (width, height)
 
-    # Get known chunk size if possible
-    chunk_size = res_chunk_map.get((width, height), (width / 12, height / 8))
+    # Get known polygon size if possible
+    poly_sizes = res_poly_size_map.get((width, height), (width / 12, height / 8))
 
     # Set seed to control randomness
     # seed('42')
@@ -63,10 +63,14 @@ def main():
     image_draw = ImageDraw.Draw(im)
 
     # Initialise a PolyLattice
-    poly_size_x = (screen_size[0] / chunk_size[0])
-    poly_size_y = (screen_size[1] / chunk_size[1])
+    poly_count_x = (screen_size[0] / poly_sizes[0])
+    poly_count_y = (screen_size[1] / poly_sizes[1])
 
-    polylattice = PolyLattice(im.size, (ceil(poly_size_x), ceil(poly_size_y)))
+    # Last polygons might be partly overflowing the image
+    polylattice = PolyLattice(
+        im.size,
+        (ceil(poly_count_x), ceil(poly_count_y)),
+        poly_sizes)
     polylattice.initialise(separate_in_triangles=True)
 
     # Choose two colors from the palette

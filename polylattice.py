@@ -8,9 +8,10 @@ class PolyLattice:
     on each axis.
     """
 
-    def __init__(self, image_size, polygon_counts):
+    def __init__(self, image_size, polygon_counts, polygon_sizes):
         self.image_size = image_size
         self.polygon_counts = polygon_counts
+        self.polygon_sizes = polygon_sizes
 
         # The polygons list.
         self.polygons = []
@@ -34,26 +35,15 @@ class PolyLattice:
     def mutate(self, intensity):
         """ Mutate the vertices that are not on the border of the image """
 
-        # Find border coordinates
-        # It is not simply image_size[0] and [1] because the image is not always
-        # perfectly divided by the polygons
-
-
         # Mutate each vertex that is not in one border of the image
         # We use the fact that a mutated vertex cannot be inside the screen
         # if its original value was outside
         for vertex in self.vertices.values():
-            init_x = vertex.coordinates[0]
-            init_y = vertex.coordinates[1]
-            if init_x != 0 and init_y != 0:
+            x_coord = vertex.coordinates[0]
+            y_coord = vertex.coordinates[1]
+            if x_coord != 0 and y_coord != 0 and x_coord < self.image_size[0] and y_coord < self.image_size[1]:
                 vertex.random_mutation(intensity)
-            if (vertex.coordinates[0] < self.image_size[0] and \
-               init_x >= self.image_size[0]) or \
-               (vertex.coordinates[1] < self.image_size[1] and \
-               init_y >= self.image_size[1]):
-                    # Revert mutation
-                    vertex.coordinates = (init_x, init_y)
-    
+
 
     def randomise_colors(self):
         """ Randomise the color of each polygon """
@@ -121,21 +111,15 @@ class PolyLattice:
         evenly considering self.polygon_counts. If separate_in_triangles is
         True, cuts those rectangles in half to make triangles
         """
-        # X and Y size of rectangles
-        rect_size = \
-        (
-            int(self.image_size[0] / self.polygon_counts[0]),
-            int(self.image_size[1] / self.polygon_counts[1])
-        )
 
         # Construct the lattice with rectangles
         for i in range(0, self.polygon_counts[0]):
             for j in range(0, self.polygon_counts[1]):
                 rect_coordinates = [
-                    (i * rect_size[0], j * rect_size[1]),
-                    ((i + 1) * rect_size[0], j * rect_size[1]),
-                    ((i + 1) * rect_size[0], (j + 1) * rect_size[1]),
-                    (i * rect_size[0], (j + 1) * rect_size[1])
+                    (i * self.polygon_sizes[0], j * self.polygon_sizes[1]),
+                    ((i + 1) * self.polygon_sizes[0], j * self.polygon_sizes[1]),
+                    ((i + 1) * self.polygon_sizes[0], (j + 1) * self.polygon_sizes[1]),
+                    (i * self.polygon_sizes[0], (j + 1) * self.polygon_sizes[1])
                 ]
 
                 rect_vertices = []
